@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include masterpiece *.css
+recursive-include masterpiece *.csv
+recursive-include masterpiece *.html
+recursive-include masterpiece *.ico
+recursive-include masterpiece *.js
+recursive-include masterpiece *.json
+recursive-include masterpiece *.md
+recursive-include masterpiece *.png
+recursive-include masterpiece *.py
+recursive-include masterpiece *.svg
+recursive-include masterpiece *.txt
+recursive-exclude masterpiece *.pyc
