@@ -17,3 +17,13 @@ For company Masterpiece. Please use it for other purposes if deemed useful, but 
 ### License
 
 MIT
+
+### Install Apps
+
+- bench get-app https://github.com/zeta17/masterpiece.git
+- bench install-app masterpiece
+
+### Uninstall Apps
+
+- bench remove-app masterpiece
+- bench uninstall-app masterpiece
