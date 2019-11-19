@@ -6,6 +6,7 @@ Version:
 ========
 1.0.2
 - Update Approval
+
 1.0.1
 - Update Sales Invoice
 - Add doctype: Approval
