@@ -16,7 +16,8 @@ app_license = "MIT"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/masterpiece/css/masterpiece.css"
-# app_include_js = "/assets/masterpiece/js/masterpiece.js"
+app_include_css = "/assets/masterpiece/css/custom.css"
+# app_include_js = "/assets/masterpiece/js/timestamp.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/masterpiece/css/masterpiece.css"
@@ -26,7 +27,10 @@ app_license = "MIT"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "Item": "public/js/item.js",
+    "Sales Invoice": "public/js/sales_invoice.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -79,13 +83,16 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+    "Stock Entry": {
+        "on_submit": "masterpiece.masterpiece.event.submit_stock_entry",
+        "on_cancel": "masterpiece.masterpiece.event.cancel_stock_entry"
+    },
+    "Sales Invoice": {
+        "on_submit": "masterpiece.masterpiece.event.submit_sales_invoice",
+        "before_cancel": "masterpiece.masterpiece.event.cancel_sales_invoice"
+    }
+}
 
 # Scheduled Tasks
 # ---------------
@@ -126,4 +133,3 @@ app_license = "MIT"
 # override_doctype_dashboards = {
 # 	"Task": "masterpiece.task.get_dashboard_data"
 # }
-

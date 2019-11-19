@@ -1,0 +1,163 @@
+.navbar-default {
+    background-image: url("/files/gray-patern.jpg");
+    background-repeat: repeat;
+    background-position: center;
+    background-color: #319ce2;
+    border-color: #319ce2;
+    background-size: 6%;
+}
+#navbar-breadcrumbs > li > a::before {
+  color: #fff;
+}
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-brand {
+    color: white;
+}
+.content	{
+	background-color:#f4f6f8;
+}
+.section-box  {
+  background-color: #ffffff
+}
+.layout-main  {
+  background-color: #ffffff;
+  border: 1px #d5d5d5 solid
+}
+.title-text {
+    color: #1341ec;
+}
+.text-muted {
+    color: #000 !important;
+}
+.awesomplete .text-muted {
+    color: #999 !important;
+}
+.control-label, .grid-heading-row, .checkbox {
+    color: #000;
+}
+.input-with-feedback, .input-with-feedback:focus, .input-with-feedback:active {
+    border: 1px solid #000;
+    color: #000;
+    background: #FFF;
+    background-color: rgb(255, 255, 255);
+}
+.page-head, .layout-main-section  {
+  border-color: #89d1ed !important
+}
+.form-section:not(:last-child), .form-inner-toolbar {
+    border-bottom: 1px solid #89d1ed;
+}
+.shaded-section {
+    background-color: #def3fb;
+}
+h6.uppercase, .h6.uppercase {
+    color: #000;
+}
+small, .small {
+    font-size: 95%;
+}
+.collapse-indicator {
+    color: #000 !important;
+}
+input[data-fieldtype="Currency"], input[data-fieldtype="Float"]{
+	text-align: right;
+}
+h4.h4 {font-weight:bold}
+
+/* custom class */
+.transaction-wrapper  {
+  margin: 5px 10px;
+}
+.item-image {
+  float: left;
+  width:30%
+}
+.title-wrapper  {
+  float: left;
+  width:70%
+}
+.title-wrapper h2 {
+  margin: 0 5px 10px 5px;
+  font-weight: bold;
+  font-size: 24px
+}
+.title-wrapper h2.penjualan {
+  color: blue;
+}
+.title-wrapper h2.retur {
+  color: #d30000;
+}
+.kabut  {
+  width:calc(100% - 45px);
+  height: calc(100% - 60px);
+  position: absolute;
+  background: #fff;
+  opacity: 0.7;
+}
+.kabut.nonaktif {
+  display: none;
+}
+.selling-wrapper  {
+  float: left;
+  width: 35%;
+  padding:0 10px 0 5px
+}
+.selling-wrapper input, .receipt-wrapper input  {
+  width: 100%;
+  border:1px #000 solid;
+  padding:5px;
+  border-radius: 3px;
+  direction: rtl;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px
+}
+.selling-wrapper input:focus, .receipt-wrapper select:focus  {
+  border: 1px blue solid;
+  background-color: #e5e5e5
+}
+.selling-wrapper label, .receipt-wrapper label  {
+  font-size: 16px;
+  display: block;
+}
+.selling-wrapper span {
+  font-size: 24px;
+  display: block;
+  font-weight: bold
+}
+.selling-wrapper span.harga {
+  color:#ff5722
+}
+.receipt-wrapper  {
+  float: left;
+  width: 35%;
+  padding:0 5px 0 10px
+}
+.receipt-wrapper select  {
+  width: 100%;
+  border:1px #000 solid;
+  padding:5px;
+  border-radius: 3px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px
+}
+.history-transaction  {
+  float: right;
+  width: 70%;
+  padding:0 5px 0 10px
+}
+.history-transaction table  {
+  width:100%
+}
+.history-transaction table tr.odd {
+  background:#f0f0f0
+}
+
+div[data-page-route="Form/Barang Dagang"] label.control-label  {
+  font-size: 16px;
+  font-weight: bold;
+}
+div[data-page-route="Form/Barang Dagang"] input.input-with-feedback,
+div[data-page-route="Form/Barang Dagang"] textarea.input-with-feedback  {
+  font-size: 18px;
+}

@@ -1,0 +1,227 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2019-11-18 20:55:28.101224",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "company",
+  "patrun_code",
+  "price_list",
+  "cb01",
+  "posting_date",
+  "currency",
+  "amended_from",
+  "sb_item",
+  "items",
+  "sb_total",
+  "cb_total1",
+  "cb_total2",
+  "total",
+  "sb_images",
+  "image1",
+  "image_veiw1",
+  "cb_images1",
+  "image2",
+  "image_view2",
+  "cb_images2",
+  "image3",
+  "image_view3",
+  "sb_info",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "PROD-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "sb_item",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Production Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Production",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_total",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_total1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_total2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_info",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted\nCancelled\nCompleted\nPartial Accepted",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "patrun_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Kode Patrun",
+   "options": "Kode Patrun",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_images",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "image1",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 1"
+  },
+  {
+   "fieldname": "image_veiw1",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image1"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "image2",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 2"
+  },
+  {
+   "fieldname": "image_view2",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image2"
+  },
+  {
+   "fieldname": "cb_images1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_images2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "image3",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 3"
+  },
+  {
+   "fieldname": "image_view3",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image3"
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "label": "Price List",
+   "options": "Price List",
+   "reqd": 1
+  }
+ ],
+ "hide_toolbar": 1,
+ "is_submittable": 1,
+ "modified": "2019-11-18 23:10:54.408060",
+ "modified_by": "Administrator",
+ "module": "Masterpiece",
+ "name": "Production",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
