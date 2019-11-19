@@ -20,6 +20,5 @@ frappe.ui.form.on('Item', {
     frm.set_df_property("hub_publishing_sb", "hidden", 1);
   },
   refresh: function(frm) {
-    // frm.set_df_property("sb_barcodes", "hidden", 1);
   },
 })

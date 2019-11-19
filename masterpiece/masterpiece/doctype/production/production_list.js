@@ -12,5 +12,5 @@ frappe.listview_settings['Production'] = {
     } else if(doc.status==="Completed") {
 			return [__("Completed"), "green", "status,=,Completed"];
 		}
-	}
+	},
 };

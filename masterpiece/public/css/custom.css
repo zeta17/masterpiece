@@ -152,12 +152,3 @@ h4.h4 {font-weight:bold}
 .history-transaction table tr.odd {
   background:#f0f0f0
 }
-
-div[data-page-route="Form/Barang Dagang"] label.control-label  {
-  font-size: 16px;
-  font-weight: bold;
-}
-div[data-page-route="Form/Barang Dagang"] input.input-with-feedback,
-div[data-page-route="Form/Barang Dagang"] textarea.input-with-feedback  {
-  font-size: 18px;
-}

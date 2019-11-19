@@ -65,7 +65,7 @@ frappe.ui.form.on('Sales Invoice', {
   },
   mode_of_payment: function(frm) {
     frm.toggle_reqd("mode_of_payment", in_list(["Cash", "Transfer/EDC"], frm.doc.payment_method));
-  }
+  },
 })
 frappe.ui.form.on('Sales Invoice Item', {
   item_code: function(frm, cdt, cdn){

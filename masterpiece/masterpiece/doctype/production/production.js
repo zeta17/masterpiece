@@ -51,7 +51,7 @@ frappe.ui.form.on('Production', {
           }
         }
       });
-    }
+    },
   },
 	price_list: function(frm) {
 		if(frm.doc.price_list) {

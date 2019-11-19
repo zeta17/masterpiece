@@ -26,7 +26,7 @@ def get_data():
 					"name": _("Kode Patrun"),
 					"onboard": 1,
 					"description": _("Kode Patrun."),
-				},
+				}
 			]
 		},
 	]

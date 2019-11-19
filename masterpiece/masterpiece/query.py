@@ -22,3 +22,20 @@ def get_stock_warehouse(item_code):
     tr2 = "".join(tr)
     table = "<div class='tax-break-up' style='overflow-x: auto;'><table class='table table-bordered table-hover'><thead><tr><th class='text-left'>Warehouse</th><th class='text-right'>Stock Qty</th><th>UOM</th></tr></thead><tbody>"+tr2+"</tbody></table></div>"
     return table
+
+@frappe.whitelist()
+def get_invoice_transaction(document_type, document_name):
+    tr = []
+    invoice = frappe.get_doc(document_type, document_name)
+    for row in frappe.get_all("Sales Invoice Item", filters={"parent":document_name}, fields=["*"]):
+        td = "<tr><td>{0} : {1}</td><td class='text-right'>{2}</td><td>{3}</td><td class='text-right'>{4}</td><td class='text-right'>{5}</td></tr>".format(row.item_code, row.item_name, fmt_money(row.qty), row.uom, fmt_money(row.rate), fmt_money(row.amount))
+        tr.append(td)
+    td = "<tr><td colspan='4' class='text-right'>Total</td><td class='text-right'>{0}</td></tr>".format(fmt_money(invoice.total))
+    tr.append(td)
+    td = "<tr><td colspan='4' class='text-right'>Discount</td><td class='text-right'>{0}</td></tr>".format(fmt_money(invoice.discount_amount))
+    tr.append(td)
+    td = "<tr><td colspan='4' class='text-right'>Grand Total</td><td class='text-right'>{0}</td></tr>".format(fmt_money(invoice.grand_total))
+    tr.append(td)
+    tr2 = "".join(tr)
+    table = "<span>Customer: {0}</span><br><div class='tax-break-up' style='overflow-x: auto;'><table class='table table-bordered table-hover'><thead><tr><th class='text-left'>Item</th><th class='text-right'>Qty</th><th>UOM</th><th class='text-right'>Harga</th><th class='text-right'>Jumlah</th></tr></thead><tbody>{1}</tbody></table></div>".format(invoice.customer, tr2)
+    return table

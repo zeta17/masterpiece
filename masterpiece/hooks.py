@@ -86,7 +86,7 @@ doctype_js = {
 doc_events = {
     "Stock Entry": {
         "on_submit": "masterpiece.masterpiece.event.submit_stock_entry",
-        "on_cancel": "masterpiece.masterpiece.event.cancel_stock_entry"
+        "on_cancel": "masterpiece.masterpiece.event.cancel_stock_entry",
     },
     "Sales Invoice": {
         "on_submit": "masterpiece.masterpiece.event.submit_sales_invoice",

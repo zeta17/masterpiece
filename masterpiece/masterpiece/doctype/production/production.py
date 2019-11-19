@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe import msgprint, _
-from frappe.utils import flt
+from frappe.utils import flt, nowdate
 from frappe.model.mapper import get_mapped_doc
 
 class Production(Document):
