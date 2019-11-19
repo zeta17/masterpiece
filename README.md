@@ -2,8 +2,8 @@
 
 For company Masterpiece. Please use it for other purposes if deemed useful, but you must take all the risk by yourself.
 
-Version:
-========
+### Version:
+
 1.0.2
 - Update Approval
 
@@ -14,6 +14,6 @@ Version:
 - Add doctype: Production
 - Add doctype: Production Item (child)
 
-#### License
+### License
 
 MIT
