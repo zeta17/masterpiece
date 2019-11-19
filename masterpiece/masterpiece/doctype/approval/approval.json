@@ -68,9 +68,11 @@
    "fieldtype": "Section Break"
   },
   {
+   "default": "-",
    "fieldname": "transaction",
    "fieldtype": "Long Text",
-   "label": "Transaction"
+   "label": "Transaction",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -83,7 +85,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-19 21:56:58.447996",
+ "modified": "2019-11-19 22:07:57.489138",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Approval",

@@ -54,6 +54,7 @@ def submit_sales_invoice(doc, method):
         pe.reference_date = nowdate()
         pe.flags.ignore_permissions = True
         pe.submit()
+        
         doc.db_set("status", "Paid")
 
 def cancel_sales_invoice(doc, method):
