@@ -19,6 +19,13 @@ frappe.ui.form.on('Sales Invoice', {
   			}
       }
 		})
+    frm.set_query("sales_person", function(doc) {
+      return {
+        filters: {
+          is_group: 0
+        }
+      }
+    })
   },
   refresh: function(frm) {
     frm.toggle_reqd("mode_of_payment", in_list(["Cash", "Transfer/EDC"], frm.doc.payment_method));
