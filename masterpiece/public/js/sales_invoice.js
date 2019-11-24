@@ -34,6 +34,7 @@ frappe.ui.form.on('Sales Invoice', {
     frm.toggle_reqd("customer", true);
     frm.set_value("update_stock", 1);
     frm.set_value("apply_discount_on", "Net Total");
+    frm.set_df_property("naming_series", "hidden", 1);
     frm.set_df_property("update_stock", "read_only", 1);
     frm.set_df_property("apply_discount_on", "read_only", 1);
     frm.set_df_property("is_pos", "hidden", 1);

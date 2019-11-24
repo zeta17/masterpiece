@@ -1,0 +1,124 @@
+{
+ "creation": "2019-11-24 22:21:38.503178",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "posting_date",
+  "patrun_code",
+  "cb01",
+  "item_code",
+  "item_name",
+  "sb02",
+  "received_qty",
+  "uom",
+  "cb02",
+  "rate",
+  "amount",
+  "sb03",
+  "receipt_component"
+ ],
+ "fields": [
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Tgl Terima",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "patrun_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Kode Patrun",
+   "options": "Kode Patrun",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Seri",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "received_qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Harga",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "default": "0",
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Jumlah",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb02",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb03",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "receipt_component",
+   "fieldtype": "Link",
+   "label": "Receipt Component",
+   "options": "Receipt Component",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-11-24 23:32:05.970030",
+ "modified_by": "Administrator",
+ "module": "Masterpiece",
+ "name": "Payroll for Component Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

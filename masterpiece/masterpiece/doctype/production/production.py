@@ -10,32 +10,112 @@ from frappe.utils import flt, nowdate
 from frappe.model.mapper import get_mapped_doc
 
 class Production(Document):
+	def on_update(self):
+		title = self.patrun_code+"-"+self.item_code
+		self.db_set("title", title)
+
 	def on_submit(self):
 		self.db_set("status", "Submitted")
 
 	def on_update_after_submit(self):
-		count_item = frappe.db.get_value("Production Item", {"parent":self.name}, "count(*)")
-		count_complete = 0
-		count_receipt = 0
-		for row in self.items:
-			sisa = (flt(row.qty) * flt(row.conversion_factor)) - flt(row.received_qty)
-			if sisa <= 0:
-				count_complete += 1
-			if flt(row.received_qty) >= 1:
-				count_receipt += 1
-		if count_item == count_complete:
+		if self.received_qty == self.qty:
 			self.db_set("status", "Completed")
 		else:
-			if count_receipt != 0 and count_item != count_complete:
+			if self.received_qty != 0:
 				self.db_set("status", "Partial Accepted")
 			else:
 				self.db_set("status", "Submitted")
+		# count_item = frappe.db.get_value("Production Item", {"parent":self.name}, "count(*)")
+		# count_complete = 0
+		# count_receipt = 0
+		# for row in self.items:
+		# 	sisa = (flt(row.qty) * flt(row.conversion_factor)) - flt(row.received_qty)
+		# 	if sisa <= 0:
+		# 		count_complete += 1
+		# 	if flt(row.received_qty) >= 1:
+		# 		count_receipt += 1
+		# if count_item == count_complete:
+		# 	self.db_set("status", "Completed")
+		# else:
+		# 	if count_receipt != 0 and count_item != count_complete:
+		# 		self.db_set("status", "Partial Accepted")
+		# 	else:
+		# 		self.db_set("status", "Submitted")
 
 	def on_cancel(self):
 		if self.status == "Submitted":
 			self.db_set("status", "Cancelled")
 		else:
 			frappe.throw(_("Can not cancel {0} document").format(self.status))
+
+	def make_receipt(self, warehouse, receipt_date, qty):
+		sisa_qty = flt(self.qty) - flt(self.received_qty)
+		if flt(sisa_qty) >= flt(qty):
+			item = frappe.get_doc("Item", self.item_code)
+			se = frappe.new_doc("Stock Entry")
+			se.stock_entry_type = "Material Receipt"
+			se.to_warehouse = warehouse
+			se.production = self.name
+			se.append("items", {
+				"item_code": self.item_code,
+				"item_name": self.item_name,
+				"description": item.description,
+				"item_group": item.item_group,
+				"qty": qty,
+				"basic_rate": flt(self.valuation_rate),
+				"basic_amount": flt(self.valuation_rate) * flt(qty),
+				"amount": flt(self.valuation_rate) * flt(qty),
+				"valuation_rate": flt(self.valuation_rate),
+				"uom": item.stock_uom,
+				"conversion_factor": 1,
+				"stock_uom": item.stock_uom
+			})
+			se.flags.ignore_permissions = True
+			se.submit()
+
+			received_qty = flt(self.received_qty) + flt(qty)
+			self.db_set("received_qty", received_qty)
+
+			self.save()
+
+			# if received_qty == self.qty:
+			# 	self.db_set("status", "Completed")
+			# else:
+			# 	if received_qty != 0:
+			# 		self.db_set("status", "Partial Accepted")
+			# 	else:
+			# 		self.db_set("status", "Submitted")
+		else:
+			frappe.throw(_("Sisa qty yang belum diterima adalah {0}").format(str(sisa_qty)[:-2]))
+
+	def make_receipt_expense(self, receipt_date, cost_component, qty, production, item_code, production_detail, rate):
+		pe = frappe.get_doc("Production Expense", production_detail)
+		sisa_qty = flt(pe.qty) - flt(pe.received_qty)
+		if sisa_qty >= flt(qty):
+			prod = frappe.get_doc("Production", production)
+			rc = frappe.new_doc("Receipt Component")
+			rc.employee = prod.employee
+			rc.item_code = item_code
+			rc.item_name = frappe.db.get_value("Item", item_code, "item_name")
+			rc.patrun_code = prod.patrun_code
+			rc.posting_date = receipt_date
+			rc.received_qty = qty
+			rc.uom = prod.uom
+			rc.rate = rate
+			rc.amount = flt(qty) * flt(rate)
+			rc.production = production
+			rc.production_detail = production_detail
+			rc.cost_component = cost_component
+			rc.company = prod.company
+			rc.flags.ignore_permissions = True
+			rc.submit()
+
+			received_qty = flt(pe.received_qty) + flt(qty)
+			pe.received_qty = received_qty
+			pe.flags.ignore_permissions = True
+			pe.save()
+		else:
+			frappe.throw(_("Sisa qty yang belum diterima adalah {0}").format(str(sisa_qty)[:-2]))
 
 @frappe.whitelist()
 def get_item_detail(item_code, price_list):
@@ -76,37 +156,37 @@ def get_item_from_patrun(kode_patrun):
 		return items
 
 
-@frappe.whitelist()
-def make_stock_receipt(source_name, target_doc=None):
-	def set_missing_values(source, target):
-		target.stock_entry_type = _("Material Receipt")
-		target.to_warehouse = "Gudang Keamanan - MPC"
-		target.run_method("set_missing_values")
-
-	def update_item(source, target, source_parent):
-		item = frappe.get_doc("Item", source.item_code)
-		target.qty = (flt(source.qty) * flt(source.conversion_factor)) - flt(source.received_qty)
-		target.item_group = item.item_group
-		target.description = item.description
-		target.basic_rate = 1
-		target.amount = 1
-
-	jv = get_mapped_doc("Production", source_name, {
-		"Production": {
-			"doctype": "Stock Entry",
-    		"field_map":{
-    			"posting_date": "posting_date"
-    		},
-		},
-		"Production Item": {
-			"doctype": "Stock Entry Detail",
-    		"field_map":{
-    			"rate": "basic_rate",
-				"parent": "production",
-				"name": "production_item"
-    		},
-			"postprocess": update_item,
-			"condition": lambda doc: ((flt(doc.qty) * flt(doc.conversion_factor)) - flt(doc.received_qty)) >= 1
-		},
-	}, target_doc, set_missing_values)
-	return jv
+# @frappe.whitelist()
+# def make_stock_receipt(source_name, target_doc=None):
+# 	def set_missing_values(source, target):
+# 		target.stock_entry_type = _("Material Receipt")
+# 		target.to_warehouse = "Gudang Keamanan - MPC"
+# 		target.run_method("set_missing_values")
+#
+# 	def update_item(source, target, source_parent):
+# 		item = frappe.get_doc("Item", source.item_code)
+# 		target.qty = (flt(source.qty) * flt(source.conversion_factor)) - flt(source.received_qty)
+# 		target.item_group = item.item_group
+# 		target.description = item.description
+# 		target.basic_rate = 1
+# 		target.amount = 1
+#
+# 	jv = get_mapped_doc("Production", source_name, {
+# 		"Production": {
+# 			"doctype": "Stock Entry",
+#     		"field_map":{
+#     			"posting_date": "posting_date"
+#     		},
+# 		},
+# 		"Production Item": {
+# 			"doctype": "Stock Entry Detail",
+#     		"field_map":{
+#     			"rate": "basic_rate",
+# 				"parent": "production",
+# 				"name": "production_item"
+#     		},
+# 			"postprocess": update_item,
+# 			"condition": lambda doc: ((flt(doc.qty) * flt(doc.conversion_factor)) - flt(doc.received_qty)) >= 1
+# 		},
+# 	}, target_doc, set_missing_values)
+# 	return jv

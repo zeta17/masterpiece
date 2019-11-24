@@ -6,26 +6,37 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 
 def submit_stock_entry(doc, method):
-    for row in doc.items:
-        if row.production:
-            received_qty = frappe.db.get_value("Production Item", row.production_item, "received_qty")
-            qty_stock_entry = flt(row.qty) * flt(row.conversion_factor)
-            new_received_qty = flt(received_qty) + qty_stock_entry
-            frappe.db.set_value("Production Item", row.production_item, "received_qty", new_received_qty)
-            production = frappe.get_doc("Production", row.production)
-            production.flags.ignore_permissions = True
-            production.save()
+    pass
+    # for row in doc.items:
+    #     if row.production:
+    #         received_qty = frappe.db.get_value("Production Item", row.production_item, "received_qty")
+    #         qty_stock_entry = flt(row.qty) * flt(row.conversion_factor)
+    #         new_received_qty = flt(received_qty) + qty_stock_entry
+    #         frappe.db.set_value("Production Item", row.production_item, "received_qty", new_received_qty)
+    #         production = frappe.get_doc("Production", row.production)
+    #         production.flags.ignore_permissions = True
+    #         production.save()
 
 def cancel_stock_entry(doc, method):
-    for row in doc.items:
-        if row.production:
-            received_qty = frappe.db.get_value("Production Item", row.production_item, "received_qty")
-            qty_stock_entry = flt(row.qty) * flt(row.conversion_factor)
-            new_received_qty = flt(received_qty) - qty_stock_entry
-            frappe.db.set_value("Production Item", row.production_item, "received_qty", new_received_qty)
-            production = frappe.get_doc("Production", row.production)
-            production.flags.ignore_permissions = True
-            production.save()
+    if doc.production:
+        qty = 0
+        for row in doc.items:
+            if row.idx == 1:
+                qty += flt(row.qty)
+        production = frappe.get_doc("Production", doc.production)
+        received_qty = flt(production.received_qty) - qty
+        production.received_qty = received_qty
+        production.flags.ignore_permissions = True
+        production.save()
+    # for row in doc.items:
+    #     if row.production:
+    #         received_qty = frappe.db.get_value("Production Item", row.production_item, "received_qty")
+    #         qty_stock_entry = flt(row.qty) * flt(row.conversion_factor)
+    #         new_received_qty = flt(received_qty) - qty_stock_entry
+    #         frappe.db.set_value("Production Item", row.production_item, "received_qty", new_received_qty)
+    #         production = frappe.get_doc("Production", row.production)
+    #         production.flags.ignore_permissions = True
+    #         production.save()
 
 def submit_sales_invoice(doc, method):
     if doc.payment_method in ["Cash", "Transfer/EDC"]:
@@ -54,7 +65,7 @@ def submit_sales_invoice(doc, method):
         pe.reference_date = nowdate()
         pe.flags.ignore_permissions = True
         pe.submit()
-        
+
         doc.db_set("status", "Paid")
 
 def cancel_sales_invoice(doc, method):

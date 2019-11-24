@@ -61,6 +61,11 @@ small, .small {
 input[data-fieldtype="Currency"], input[data-fieldtype="Float"]{
 	text-align: right;
 }
+div[data-fieldtype="Currency"] div.like-disabled-input,
+div[data-fieldtype="Float"] div.like-disabled-input {
+  text-align: right;
+}
+
 h4.h4 {font-weight:bold}
 
 /* custom class */
@@ -152,3 +157,9 @@ h4.h4 {font-weight:bold}
 .history-transaction table tr.odd {
   background:#f0f0f0
 }
+/* color indicator */
+span.blue, a.blue {color: blue}
+span.red, a.red {color: red}
+span.orange, a.orange {color: orange}
+span.green, a.green {color: green}
+span.purple, a.purple {color: purple}

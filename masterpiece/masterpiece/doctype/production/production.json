@@ -5,20 +5,28 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "naming_series",
-  "company",
+  "employee",
+  "item_code",
   "patrun_code",
-  "price_list",
+  "item_name",
   "cb01",
   "posting_date",
-  "currency",
-  "amended_from",
+  "qty",
+  "uom",
+  "received_qty",
   "sb_item",
   "items",
   "sb_total",
   "cb_total1",
   "cb_total2",
   "total",
+  "sb_expenses",
+  "expenses",
+  "sb02",
+  "cb02a",
+  "cb02b",
+  "total_expenses",
+  "valuation_rate",
   "sb_images",
   "image1",
   "image_veiw1",
@@ -29,7 +37,13 @@
   "image3",
   "image_view3",
   "sb_info",
-  "status"
+  "naming_series",
+  "company",
+  "title",
+  "cb_info",
+  "status",
+  "currency",
+  "amended_from"
  ],
  "fields": [
   {
@@ -55,7 +69,7 @@
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Posting Date",
+   "label": "Date",
    "reqd": 1
   },
   {
@@ -71,9 +85,9 @@
   {
    "fieldname": "items",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Items",
-   "options": "Production Item",
-   "reqd": 1
+   "options": "Production Item"
   },
   {
    "fieldname": "amended_from",
@@ -86,7 +100,8 @@
   },
   {
    "fieldname": "sb_total",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "fieldname": "cb_total1",
@@ -105,6 +120,7 @@
    "read_only": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "sb_info",
    "fieldtype": "Section Break",
    "label": "More Information"
@@ -175,16 +191,102 @@
    "options": "image3"
   },
   {
-   "fieldname": "price_list",
+   "fieldname": "employee",
    "fieldtype": "Link",
-   "label": "Price List",
-   "options": "Price List",
+   "in_standard_filter": 1,
+   "label": "Tukang Potong",
+   "options": "Employee",
    "reqd": 1
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "No. Seri",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_expenses",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "expenses",
+   "fieldtype": "Table",
+   "label": "Komponen Biaya",
+   "options": "Production Expense",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_info",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "label": "Qty",
+   "reqd": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb02",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb02a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb02b",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_expenses",
+   "fieldtype": "Currency",
+   "label": "Total Biaya",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "valuation_rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Valuation Rate",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "received_qty",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Received Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Nama Barang",
+   "read_only": 1
   }
  ],
- "hide_toolbar": 1,
  "is_submittable": 1,
- "modified": "2019-11-19 21:59:41.360721",
+ "modified": "2019-11-24 22:00:43.481078",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Production",
@@ -223,5 +325,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "title_field": "title",
  "track_changes": 1
 }
