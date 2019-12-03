@@ -58,11 +58,14 @@ small, .small {
 .collapse-indicator {
     color: #000 !important;
 }
-input[data-fieldtype="Currency"], input[data-fieldtype="Float"]{
+input[data-fieldtype="Currency"],
+input[data-fieldtype="Float"],
+input[data-fieldtype="Percent"] {
 	text-align: right;
 }
 div[data-fieldtype="Currency"] div.like-disabled-input,
-div[data-fieldtype="Float"] div.like-disabled-input {
+div[data-fieldtype="Float"] div.like-disabled-input,
+  div[data-fieldtype="Percent"] div.like-disabled-input {
   text-align: right;
 }
 

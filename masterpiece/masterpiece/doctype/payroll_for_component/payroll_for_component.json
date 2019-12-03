@@ -16,13 +16,25 @@
   "sb_detail",
   "details",
   "sb02",
-  "cb02a",
-  "cb02b",
+  "paid_from_account",
+  "cb02",
   "total",
+  "sb04",
+  "get_other_payroll",
+  "others",
+  "total_held_others",
+  "sb03",
+  "payment_percentage",
+  "cb03",
+  "total_payment",
+  "held_amount",
   "sb_info",
   "company",
+  "payable_account",
+  "cb_info",
   "title",
-  "amended_from"
+  "amended_from",
+  "is_paid_for_held"
  ],
  "fields": [
   {
@@ -82,6 +94,7 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -115,14 +128,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "cb02a",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "cb02b",
-   "fieldtype": "Column Break"
-  },
-  {
    "default": "0",
    "fieldname": "total",
    "fieldtype": "Currency",
@@ -136,10 +141,92 @@
    "label": "Title",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "paid_from_account",
+   "fieldtype": "Link",
+   "label": "Dibayar dari akun",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb03",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "100",
+   "fieldname": "payment_percentage",
+   "fieldtype": "Percent",
+   "label": "Persentase Pembayaran (%)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb03",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_info",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_payment",
+   "fieldtype": "Currency",
+   "label": "Total Pembayaran",
+   "read_only": 1
+  },
+  {
+   "default": "2241.001 - Hutang Karyawan - MPC",
+   "fieldname": "payable_account",
+   "fieldtype": "Link",
+   "label": "Hutang Pembayaran",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "held_amount",
+   "fieldtype": "Currency",
+   "label": "Jumlah yang ditahan",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_paid_for_held",
+   "fieldtype": "Check",
+   "label": "Is Paid for Held",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb04",
+   "fieldtype": "Section Break",
+   "label": "Payroll yang masih ditahan"
+  },
+  {
+   "fieldname": "others",
+   "fieldtype": "Table",
+   "label": "List Payroll",
+   "options": "Payroll for Component Other"
+  },
+  {
+   "fieldname": "get_other_payroll",
+   "fieldtype": "Button",
+   "label": "Get Transaction"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_held_others",
+   "fieldtype": "Currency",
+   "label": "Total ditahan",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-24 23:48:56.687398",
+ "modified": "2019-12-03 21:36:44.101803",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Payroll for Component",

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
+#   1.1.2
+#   - Update Payroll for Component
+#   - Add field: payroll_for_component di Journal Entry
+#   - Add doctype: Payroll for Component Other (child)
 #   1.1.1
 #   - Add doctype: Payroll for Component Detail (child)
 #   - Add doctype: Payroll for Component

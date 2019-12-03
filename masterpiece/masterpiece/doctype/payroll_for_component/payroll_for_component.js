@@ -4,6 +4,14 @@
 frappe.ui.form.on('Payroll for Component', {
   onload: function(frm) {
 		frm.events.set_read_only(frm);
+    frm.set_query("paid_from_account", function(doc) {
+			return {
+				filters: {
+          is_group: 0,
+          account_type: ["in", ["Cash", "Bank"]]
+				}
+			}
+		})
   },
 	refresh: function(frm) {
 
@@ -58,6 +66,7 @@ frappe.ui.form.on('Payroll for Component', {
               c.rate = d.rate;
               c.amount = d.amount;
               c.receipt_component = d.receipt_component;
+              c.cost_component = d.cost_component;
             })
             calculate_total(frm);
             frm.refresh_fields();
@@ -66,12 +75,43 @@ frappe.ui.form.on('Payroll for Component', {
       })
     }
   },
+  get_other_payroll: function(frm) {
+    frm.clear_table("others");
+    frappe.call({
+      method: "masterpiece.masterpiece.doctype.payroll_for_component.payroll_for_component.get_other_payroll",
+      args: {
+        employee: frm.doc.employee
+      },
+      callback: function(r, rt) {
+        if(r.message) {
+          $.each(r.message, function(i, d) {
+            var c = frm.add_child("others");
+            c.payroll_for_component = d.payroll_for_component;
+            c.date = d.date;
+            c.held_amount = d.held_amount;
+          })
+          calculate_total(frm);
+          frm.refresh_fields();
+        }
+      }
+    })
+  },
+  payment_percentage: function(frm) {
+    calculate_total(frm);
+  }
 });
+
 frappe.ui.form.on('Payroll for Component Detail', {
   details_remove: function(frm, cdt, cdn) {
 		calculate_total(frm);
 	},
 })
+frappe.ui.form.on('Payroll for Component Other', {
+  others_remove: function(frm, cdt, cdn) {
+		calculate_total(frm);
+	},
+})
+
 var calculate_total = function(frm) {
   var total = frappe.utils.sum(
 		(frm.doc.details || []).map(function(i) {
@@ -79,4 +119,18 @@ var calculate_total = function(frm) {
 		})
 	);
 	frm.set_value("total", total);
+  var total_held = frappe.utils.sum(
+		(frm.doc.others || []).map(function(i) {
+			return (flt(i.held_amount));
+		})
+	);
+	frm.set_value("total_held_others", total_held);
+  var total_pay = frappe.utils.sum(
+		(frm.doc.details || []).map(function(i) {
+			return (flt(i.amount) * (flt(frm.doc.payment_percentage) / 100));
+		})
+	) + (flt(frm.doc.total_held_others) * (flt(frm.doc.payment_percentage) / 100));
+	frm.set_value("total_payment", total_pay);
+  var held_amount = flt(total) + flt(total_held) - flt(total_pay);
+	frm.set_value("held_amount", held_amount);
 }
