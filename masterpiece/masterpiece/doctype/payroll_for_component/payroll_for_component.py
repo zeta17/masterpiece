@@ -23,7 +23,7 @@ class PayrollforComponent(Document):
 			if row.receipt_component:
 				if action == "submit":
 					if frappe.db.exists("Receipt Component", {"name":row.receipt_component, "is_paid":1}):
-						frappe.throw(_("Detail no.<b>{0}</b> untuk Receipt Component <b>{1}</b> sudah dibayar").format(row.idx, row.receipt_component))
+						frappe.throw(_("Baris #<b>{0}</b> untuk Receipt Component <b>{1}</b> sudah dibayar").format(row.idx, row.receipt_component))
 					else:
 						rc = frappe.get_doc("Receipt Component", row.receipt_component)
 						rc.is_paid = 1
@@ -51,14 +51,10 @@ class PayrollforComponent(Document):
 		if flt(self.total_held_others) > 0:
 			je.append("accounts", {
 				"account": self.payable_account,
-				"party_type": "Employee",
-				"party": self.employee,
 				"debit_in_account_currency": self.total_held_others
 			})
 		je.append("accounts", {
 			"account": "5210.005 - Biaya Gaji Lain Lain - MPC",
-			"party_type": "Employee",
-			"party": self.employee,
 			"debit_in_account_currency": self.total
 		})
 		je.append("accounts", {
@@ -68,8 +64,6 @@ class PayrollforComponent(Document):
 		if flt(self.held_amount) > 0:
 			je.append("accounts", {
 				"account": self.payable_account,
-				"party_type": "Employee",
-				"party": self.employee,
 				"credit_in_account_currency": self.held_amount
 			})
 		je.payroll_for_component = self.name

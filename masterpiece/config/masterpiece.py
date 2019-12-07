@@ -52,6 +52,12 @@ def get_data():
 					"name": _("Cost Component"),
 					"onboard": 1,
 					"description": _("Cost Component."),
+				},
+				{
+					"type": "doctype",
+					"name": _("Tukang"),
+					"onboard": 1,
+					"description": _("Tukang."),
 				}
 			]
 		},

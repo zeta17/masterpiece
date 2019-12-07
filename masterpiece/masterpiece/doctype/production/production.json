@@ -14,6 +14,12 @@
   "qty",
   "uom",
   "received_qty",
+  "sb03",
+  "lebar_dada",
+  "cb03",
+  "panjang",
+  "sb04",
+  "price_list_rate",
   "sb_item",
   "items",
   "sb_total",
@@ -22,6 +28,7 @@
   "total",
   "sb_expenses",
   "expenses",
+  "add_cost_component",
   "sb02",
   "cb02a",
   "cb02b",
@@ -193,10 +200,9 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
-   "in_standard_filter": 1,
+   "hidden": 1,
    "label": "Tukang Potong",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "item_code",
@@ -247,6 +253,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "total_expenses",
    "fieldtype": "Currency",
@@ -255,6 +262,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "valuation_rate",
    "fieldtype": "Currency",
@@ -283,10 +291,47 @@
    "fieldtype": "Data",
    "label": "Nama Barang",
    "read_only": 1
+  },
+  {
+   "description": "Ukuran",
+   "fieldname": "sb03",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "lebar_dada",
+   "fieldtype": "Float",
+   "label": "Lebar Dada"
+  },
+  {
+   "fieldname": "cb03",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "panjang",
+   "fieldtype": "Float",
+   "label": "Panjang"
+  },
+  {
+   "fieldname": "sb04",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "price_list_rate",
+   "fieldtype": "Currency",
+   "label": "Harga Jual"
+  },
+  {
+   "depends_on": "eval:doc.docstatus == '1'",
+   "fieldname": "add_cost_component",
+   "fieldtype": "Button",
+   "label": "Tambah Komponen Biaya"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-11-24 22:00:43.481078",
+ "modified": "2019-12-06 22:34:15.164741",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Production",

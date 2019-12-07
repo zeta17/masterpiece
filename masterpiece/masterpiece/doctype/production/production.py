@@ -13,9 +13,37 @@ class Production(Document):
 	def on_update(self):
 		title = self.patrun_code+"-"+self.item_code
 		self.db_set("title", title)
+		self.update_patrun()
+		self.update_price_list()
+
+	def update_patrun(self):
+		if self.image1:
+			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image1)
+		if self.image2:
+			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image2)
+		if self.image3:
+			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image3)
+
+	def update_price_list(self):
+		if flt(self.price_list_rate) > 0:
+			if frappe.db.exists("Item Price", {"item_code":self.item_code, "price_list":"Standard Selling", "selling":1}):
+				frappe.db.set_value("Item Price", {"item_code":self.item_code, "price_list":"Standard Selling", "selling":1}, "price_list_rate", self.price_list_rate)
+			else:
+				item_price = frappe.new_doc("Item Price")
+				item_price.item_code = self.item_code
+				item_price.item_name = self.item_name
+				item_price.description = frappe.db.get_value("Item", self.item_code, "description")
+				item_price.uom = self.uom
+				item_price.price_list = "Standard Selling"
+				item_price.price_list_rate = self.price_list_rate
+				item_price.selling = 1
+				item_price.flags.ignore_permissions = True
+				item_price.save()
 
 	def on_submit(self):
 		self.db_set("status", "Submitted")
+		self.update_patrun()
+		self.update_price_list()
 
 	def on_update_after_submit(self):
 		if self.received_qty == self.qty:
@@ -25,22 +53,8 @@ class Production(Document):
 				self.db_set("status", "Partial Accepted")
 			else:
 				self.db_set("status", "Submitted")
-		# count_item = frappe.db.get_value("Production Item", {"parent":self.name}, "count(*)")
-		# count_complete = 0
-		# count_receipt = 0
-		# for row in self.items:
-		# 	sisa = (flt(row.qty) * flt(row.conversion_factor)) - flt(row.received_qty)
-		# 	if sisa <= 0:
-		# 		count_complete += 1
-		# 	if flt(row.received_qty) >= 1:
-		# 		count_receipt += 1
-		# if count_item == count_complete:
-		# 	self.db_set("status", "Completed")
-		# else:
-		# 	if count_receipt != 0 and count_item != count_complete:
-		# 		self.db_set("status", "Partial Accepted")
-		# 	else:
-		# 		self.db_set("status", "Submitted")
+		self.update_patrun()
+		self.update_price_list()
 
 	def on_cancel(self):
 		if self.status == "Submitted":
@@ -54,6 +68,8 @@ class Production(Document):
 			item = frappe.get_doc("Item", self.item_code)
 			se = frappe.new_doc("Stock Entry")
 			se.stock_entry_type = "Material Receipt"
+			se.set_posting_time = 1
+			se.posting_date = receipt_date
 			se.to_warehouse = warehouse
 			se.production = self.name
 			se.append("items", {
@@ -78,23 +94,16 @@ class Production(Document):
 
 			self.save()
 
-			# if received_qty == self.qty:
-			# 	self.db_set("status", "Completed")
-			# else:
-			# 	if received_qty != 0:
-			# 		self.db_set("status", "Partial Accepted")
-			# 	else:
-			# 		self.db_set("status", "Submitted")
 		else:
 			frappe.throw(_("Sisa qty yang belum diterima adalah {0}").format(str(sisa_qty)[:-2]))
 
-	def make_receipt_expense(self, receipt_date, cost_component, qty, production, item_code, production_detail, rate):
+	def make_receipt_expense(self, receipt_date, cost_component, qty, production, item_code, production_detail, rate, tukang):
 		pe = frappe.get_doc("Production Expense", production_detail)
 		sisa_qty = flt(pe.qty) - flt(pe.received_qty)
 		if sisa_qty >= flt(qty):
 			prod = frappe.get_doc("Production", production)
 			rc = frappe.new_doc("Receipt Component")
-			rc.employee = prod.employee
+			rc.employee = tukang
 			rc.item_code = item_code
 			rc.item_name = frappe.db.get_value("Item", item_code, "item_name")
 			rc.patrun_code = prod.patrun_code
@@ -116,6 +125,24 @@ class Production(Document):
 			pe.save()
 		else:
 			frappe.throw(_("Sisa qty yang belum diterima adalah {0}").format(str(sisa_qty)[:-2]))
+
+	def add_expenses(self, cost_component, employee, rate):
+		prod = frappe.get_doc("Production", self.name)
+		amount = flt(self.qty) * flt(rate)
+		total_expenses = flt(prod.total_expenses) + flt(amount)
+		valuation_rate = flt(total_expenses) / flt(self.qty)
+		prod.append("expenses", {
+			"cost_component": cost_component,
+			"employee": employee,
+			"rate": rate,
+			"qty": self.qty,
+			"amount": amount
+		})
+		prod.total_expenses = total_expenses
+		prod.valuation_rate = valuation_rate
+		prod.flags.ignore_permissions = True
+		prod.flags.ignore_validate_update_after_submit = True
+		prod.save()
 
 @frappe.whitelist()
 def get_item_detail(item_code, price_list):

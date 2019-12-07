@@ -41,18 +41,28 @@ def cancel_stock_entry(doc, method):
 def submit_sales_invoice(doc, method):
     if doc.payment_method in ["Cash", "Transfer/EDC"]:
         account = frappe.db.get_value("Mode of Payment Account", {"parent":doc.mode_of_payment, "company":doc.company}, "default_account")
+        if doc.is_return:
+            outstanding_amount = flt(doc.outstanding_amount) * -1
+            payment_type = "Pay"
+            paid_from = account
+            paid_to = doc.debit_to
+        else:
+            outstanding_amount = flt(doc.outstanding_amount)
+            payment_type = "Receive"
+            paid_from = doc.debit_to
+            paid_to = account
         pe = frappe.new_doc("Payment Entry")
-        pe.payment_type = "Receive"
+        pe.payment_type = payment_type
         pe.mode_of_payment = doc.mode_of_payment
         pe.party_type = "Customer"
         pe.party = doc.customer
         pe.party_balance = doc.outstanding_amount
-        pe.paid_from = doc.debit_to
+        pe.paid_from = paid_from
         pe.paid_from_account_currency = doc.currency
-        pe.paid_to = account
+        pe.paid_to = paid_to
         pe.paid_to_account_currency = doc.currency
-        pe.paid_amount = doc.outstanding_amount
-        pe.received_amount = doc.outstanding_amount
+        pe.paid_amount = outstanding_amount
+        pe.received_amount = outstanding_amount
         pe.append("references", {
             "reference_doctype": "Sales Invoice",
             "reference_name": doc.name,
@@ -79,7 +89,8 @@ def check_approval_cancel_si(doc):
 
 def cancel_pe_from_si(doc):
     if doc.payment_method in ["Cash", "Transfer/EDC"]:
-        pe = frappe.db.get_value("Payment Entry Reference", {"reference_name":doc.name}, "parent")
-        payment_entry = frappe.get_doc("Payment Entry", pe)
-        payment_entry.flags.ignore_permissions = True
-        payment_entry.cancel()
+        if frappe.db.exists("Payment Entry Reference", {"reference_name":doc.name}):
+            pe = frappe.db.get_value("Payment Entry Reference", {"reference_name":doc.name}, "parent")
+            payment_entry = frappe.get_doc("Payment Entry", pe)
+            payment_entry.flags.ignore_permissions = True
+            payment_entry.cancel()

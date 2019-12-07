@@ -18,6 +18,13 @@ frappe.ui.form.on('Item', {
     frm.set_df_property("website_section", "hidden", 1);
     frm.set_df_property("sb72", "hidden", 1);
     frm.set_df_property("hub_publishing_sb", "hidden", 1);
+    frm.set_query("item_group", function(doc) {
+      return {
+  			filters: {
+          is_group: 0
+  			}
+  		}
+    })
   },
   refresh: function(frm) {
   },

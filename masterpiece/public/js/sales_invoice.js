@@ -1,6 +1,9 @@
 frappe.ui.form.on('Sales Invoice', {
   onload: function(frm) {
     frm.trigger("reset_property");
+    if(frm.doc.__islocal) {
+      frm.set_value("set_warehouse", "Gudang Toko - MPC");      
+    }
     frm.set_query("mode_of_payment", function(doc) {
       if(frm.doc.payment_method == "Cash"){
         return {

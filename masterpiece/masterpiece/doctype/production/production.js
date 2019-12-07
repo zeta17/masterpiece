@@ -77,6 +77,28 @@ frappe.ui.form.on('Production', {
 			frm.set_value("uom", null);
 		}
 	},
+	patrun_code: function(frm) {
+		if(frm.doc.patrun_code) {
+			frappe.call({
+	      method: "frappe.client.get",
+	      args: {
+	        doctype: "Kode Patrun",
+					name: frm.doc.patrun_code
+	      },
+	      callback: function(data) {
+					frm.set_value("image1", data.message.image1);
+	        frm.set_value("image2", data.message.image2);
+					frm.set_value("image3", data.message.image3);
+					frm.refresh_fields();
+	      }
+	    })
+		}else{
+			frm.set_value("image1", null);
+			frm.set_value("image2", null);
+			frm.set_value("image3", null);
+			frm.refresh_fields();
+		}
+	},
 	qty: function(frm) {
 		if(frm.doc.qty) {
 			$.each(frm.doc.expenses, function(i, d) {
@@ -88,63 +110,41 @@ frappe.ui.form.on('Production', {
 			});
 		}
 	},
-  // patrun_code: function(frm) {
-  //   if(frm.doc.patrun_code) {
-  //     frappe.call({
-  //       method: "masterpiece.masterpiece.doctype.production.production.get_item_from_patrun",
-  //       args: {
-  //         kode_patrun: frm.doc.patrun_code
-  //       },
-  //       callback: function(r, rt) {
-  //         if(!r.exc) {
-  //           if(r.message) {
-  //             frm.clear_table("items");
-  //             $.each(r.message, function(i, d) {
-  //               var c = frm.add_child("items");
-  //               c.item_code = d.item_code;
-  //               c.item_name = d.item_name;
-  //               c.stock_uom = d.stock_uom;
-  //               c.uom = d.uom;
-  //               c.qty = d.qty;
-  //               c.conversion_factor = d.conversion_factor;
-  //               c.rate = d.rate;
-  //               c.amount = d.amount;
-  //             });
-  //             frm.refresh_fields();
-  //             calculate_total(frm);
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  // },
-	// price_list: function(frm) {
-	// 	if(frm.doc.price_list) {
-	// 		$.each(frm.doc.items || [], function(i, item) {
-	// 			frappe.call({
-	// 				method: "frappe.client.get",
-	// 				args: {
-	// 					doctype: "Item Price",
-	// 					filters: {
-	// 						"item_code": item.item_code,
-	// 						"price_list": frm.doc.price_list
-	// 					}
-	// 				},
-	// 				callback: function(data) {
-	// 					item.rate = data.message.price_list_rate;
-	// 					item.amount = flt(data.message.price_list_rate) * flt(item.qty);
-	// 					calculate_total(frm);
-	// 					frm.refresh_field("items");
-	// 				}
-	// 	    })
-	// 		})
-	// 	}
-	// },
   calculate_amount: function(frm, cdt, cdn) {
     var d = frappe.model.get_doc(cdt, cdn);
     d.amount = flt(d.qty) * flt(d.rate);
     frm.refresh_fields();
   },
+	add_cost_component: function(frm) {
+		var dialog = new frappe.ui.Dialog({
+			title: __('Tambah Komponen Biaya'),
+			fields: [
+				{"fieldtype": "Link", "label": __("Jenis Pengerjaan"), "fieldname": "cost_component", "options":"Cost Component", "reqd":1},
+				{"fieldtype": "Link", "label": __("Tukang"), "fieldname": "tukang", "options":"Tukang", "reqd":1},
+				{"fieldtype": "Currency", "label": __("Harga"), "fieldname": "rate", "reqd":1},
+			]
+		});
+		dialog.set_primary_action(__('Submit'), function() {
+			var args = dialog.get_values();
+			if(!args) return;
+			return cur_frm.call({
+				method: "add_expenses",
+				doc: cur_frm.doc,
+				args: args,
+				callback: function(r){
+					if(r.exc){
+						frappe.msgprint(__("There were errors."));
+						return;
+					}
+					dialog.hide();
+					frm.refresh_fields();
+					frm.reload_doc();
+				},
+				btn: this
+			})
+		});
+		dialog.show();
+	}
 });
 frappe.ui.form.on('Production Expense', {
 	expenses_add: function(frm, cdt, cdn) {
@@ -166,8 +166,10 @@ frappe.ui.form.on('Production Expense', {
 		var dialog = new frappe.ui.Dialog({
 			title: __('Pemerimaan Jasa'),
 			fields: [
-				{"fieldtype": "Date", "label": __("Tanggal Terima"), "fieldname": "receipt_date", "default":"Today", "reqd":1},
 				{"fieldtype": "Link", "label": __("Jenis Pengerjaan"), "fieldname": "cost_component", "options":"Cost Component", "default":d.cost_component, "read_only":1},
+				{"fieldtype": "Link", "label": __("Tukang"), "fieldname": "tukang", "options":"Tukang", "default":d.tukang, "read_only":1},
+				{"fieldtype": "Column Break", "fieldname": "cb01"},
+				{"fieldtype": "Date", "label": __("Tanggal Terima"), "fieldname": "receipt_date", "default":"Today", "reqd":1},
 				{"fieldtype": "Float", "label": __("Qty"), "fieldname": "qty", "reqd":1, "default":flt(d.qty) - flt(d.received_qty)},
 				{"fieldtype": "Link", "label": __("Production"), "fieldname": "production", "options":"Production", "default":frm.doc.name, "read_only":1, "hidden":1},
 				{"fieldtype": "Link", "label": __("No Seri"), "fieldname": "item_code", "options":"Item", "default":frm.doc.item_code, "read_only":1, "hidden":1},
@@ -197,43 +199,6 @@ frappe.ui.form.on('Production Expense', {
 		dialog.show();
 	}
 })
-// frappe.ui.form.on('Production Item', {
-//   items_remove: function(frm, cdt, cdn) {
-//     calculate_total(frm);
-//   },
-//   item_code: function(frm, cdt, cdn) {
-//     var d = locals[cdt][cdn];
-//     if(d.item_code){
-//       frappe.call({
-// 				method: "masterpiece.masterpiece.doctype.production.production.get_item_detail",
-//         args: {
-//           item_code: d.item_code,
-// 					price_list: frm.doc.price_list || "-"
-//   			},
-// 				callback: function(data) {
-//           frappe.model.set_value(cdt, cdn, data.message);
-//           calculate_total(frm);
-// 				}
-//       })
-//     }else{
-//       frappe.model.set_value(cdt, cdn, "item_name", null);
-//       frappe.model.set_value(cdt, cdn, "stock_uom", null);
-//       frappe.model.set_value(cdt, cdn, "uom", null);
-//       frappe.model.set_value(cdt, cdn, "qty", null);
-//       frappe.model.set_value(cdt, cdn, "conversion_factor", null);
-// 			frappe.model.set_value(cdt, cdn, "rate", null);
-//       frappe.model.set_value(cdt, cdn, "amount", null);
-//     }
-//   },
-// 	qty: function(frm, cdt, cdn) {
-//     frm.events.calculate_amount(frm, cdt, cdn);
-//     calculate_total(frm);
-// 	},
-//   rate: function(frm, cdt, cdn) {
-//     frm.events.calculate_amount(frm, cdt, cdn);
-//     calculate_total(frm);
-// 	}
-// });
 var calculate_total = function(frm) {
   var total = frappe.utils.sum(
 		(frm.doc.expenses || []).map(function(i) {

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-__version__ = '1.1.2'
+__version__ = '1.2.1'
 
+#   1.2.1
+#   - Update Production
+#   - Update Payroll for Component
+#   - Add doctype: Tukang
 #   1.1.2
 #   - Update Payroll for Component
 #   - Add field: payroll_for_component di Journal Entry

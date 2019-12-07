@@ -28,6 +28,7 @@ app_include_css = "/assets/masterpiece/css/custom.css"
 
 # include js in doctype views
 doctype_js = {
+    "Employee": "public/js/employee.js",
     "Item": "public/js/item.js",
     "Sales Invoice": "public/js/sales_invoice.js"
 }

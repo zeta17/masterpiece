@@ -160,6 +160,37 @@ h4.h4 {font-weight:bold}
 .history-transaction table tr.odd {
   background:#f0f0f0
 }
+.btn.btn-secondary.btn-default.btn-sm {
+  color: #fff;
+  background: rgb(255,0,0);
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(244,103,103,1) 100%);
+}
+/*refresh button*/
+.btn.btn-secondary.btn-default.btn-sm.hidden-xs {
+  color: #fff;
+  background: rgb(0,106,55);
+  background: linear-gradient(90deg, rgba(0,106,55,1) 0%, rgba(0,167,109,1) 100%);
+}
+.btn.btn-default.btn-xs {
+  color: #fff;
+  background: rgb(68,0,166);
+  background: linear-gradient(90deg, rgba(68,0,166,1) 0%, rgba(102,0,249,1) 100%);
+}
+.btn.btn-default.btn-xs.filter-button,
+.btn.btn-default.btn-xs.btn-order
+ {
+  color: #fff;
+  background: #cfdce5;
+}
+.btn.btn-default.btn-xs.pull-right,
+.btn.btn-default.btn-xs.tree-toolbar-button,
+.grid-download.btn.btn-xs.btn-default,
+.grid-upload.btn.btn-xs.btn-default,
+.btn.btn-xs.btn-default.grid-add-row,
+.grid-add-multiple-rows.btn.btn-xs.btn-default {
+  color: #000;
+  background: #cfdce5;
+}
 /* color indicator */
 span.blue, a.blue {color: blue}
 span.red, a.red {color: red}

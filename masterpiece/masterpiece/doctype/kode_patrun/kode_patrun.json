@@ -5,7 +5,16 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "patrun_code"
+  "patrun_code",
+  "sb02",
+  "image1",
+  "image_veiw1",
+  "cb02a",
+  "image2",
+  "image_veiw2",
+  "cb02b",
+  "image3",
+  "image_veiw3"
  ],
  "fields": [
   {
@@ -15,9 +24,54 @@
    "label": "Kode Patrun",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "sb02",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "image1",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 1"
+  },
+  {
+   "fieldname": "image_veiw1",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image1"
+  },
+  {
+   "fieldname": "cb02a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "image2",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 2"
+  },
+  {
+   "fieldname": "image_veiw2",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image2"
+  },
+  {
+   "fieldname": "cb02b",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "image3",
+   "fieldtype": "Attach Image",
+   "label": "Gambar 3"
+  },
+  {
+   "fieldname": "image_veiw3",
+   "fieldtype": "Image",
+   "label": "Image View",
+   "options": "image3"
   }
  ],
- "modified": "2019-11-19 22:00:14.367053",
+ "modified": "2019-12-06 21:53:56.356853",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Kode Patrun",
