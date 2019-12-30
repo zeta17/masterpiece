@@ -1,0 +1,50 @@
+{
+ "creation": "2019-12-30 08:51:53.833707",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "account",
+  "note",
+  "cb01",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Biaya",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Keterangan"
+  },
+  {
+   "fieldname": "cb01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Jumlah",
+   "reqd": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2019-12-30 08:51:53.833707",
+ "modified_by": "Administrator",
+ "module": "Masterpiece",
+ "name": "Store Cash Flow Expense",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

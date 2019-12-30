@@ -1,4 +1,5 @@
 {
+ "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2019-11-18 20:55:28.101224",
  "doctype": "DocType",
@@ -34,6 +35,7 @@
   "cb02b",
   "total_expenses",
   "valuation_rate",
+  "default_image",
   "sb_images",
   "image1",
   "image_veiw1",
@@ -56,7 +58,7 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
-   "label": "Series",
+   "label": "No Otomatis",
    "options": "PROD-",
    "reqd": 1
   },
@@ -328,10 +330,17 @@
    "fieldname": "add_cost_component",
    "fieldtype": "Button",
    "label": "Tambah Komponen Biaya"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "default_image",
+   "fieldtype": "Select",
+   "label": "Gambar Utama",
+   "options": "\nGambar 1\nGambar 2\nGambar 3"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-06 22:34:15.164741",
+ "modified": "2019-12-07 14:58:59.358193",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Production",

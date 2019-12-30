@@ -15,14 +15,16 @@ class Production(Document):
 		self.db_set("title", title)
 		self.update_patrun()
 		self.update_price_list()
+		self.update_item()
+		self.recalculate_rate()
 
 	def update_patrun(self):
 		if self.image1:
 			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image1)
 		if self.image2:
-			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image2)
+			frappe.db.set_value("Kode Patrun", self.patrun_code, "image2", self.image2)
 		if self.image3:
-			frappe.db.set_value("Kode Patrun", self.patrun_code, "image1", self.image3)
+			frappe.db.set_value("Kode Patrun", self.patrun_code, "image3", self.image3)
 
 	def update_price_list(self):
 		if flt(self.price_list_rate) > 0:
@@ -40,10 +42,33 @@ class Production(Document):
 				item_price.flags.ignore_permissions = True
 				item_price.save()
 
+	def update_item(self):
+		if self.default_image:
+			if self.default_image == "Gambar 1":
+				image = self.image1
+			if self.default_image == "Gambar 2":
+				image = self.image2
+			if self.default_image == "Gambar 3":
+				image = self.image3
+			frappe.db.set_value("Item", self.item_code, "image", image)
+
+	def recalculate_rate(self):
+		total = 0
+		cogs = 0
+		for row in self.expenses:
+			amount = flt(row.qty) * flt(row.rate)
+			row.db_set("amount", amount)
+			row.db_set("qty", self.qty)
+			total += amount
+			cogs += flt(row.rate)
+		self.db_set("total_expenses", total)
+		self.db_set("valuation_rate", cogs)
+
 	def on_submit(self):
 		self.db_set("status", "Submitted")
 		self.update_patrun()
 		self.update_price_list()
+		self.update_item()
 
 	def on_update_after_submit(self):
 		if self.received_qty == self.qty:
@@ -55,6 +80,7 @@ class Production(Document):
 				self.db_set("status", "Submitted")
 		self.update_patrun()
 		self.update_price_list()
+		self.update_item()
 
 	def on_cancel(self):
 		if self.status == "Submitted":

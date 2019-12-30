@@ -2,7 +2,7 @@ frappe.ui.form.on('Sales Invoice', {
   onload: function(frm) {
     frm.trigger("reset_property");
     if(frm.doc.__islocal) {
-      frm.set_value("set_warehouse", "Gudang Toko - MPC");      
+      frm.set_value("set_warehouse", "Gudang Toko - MPC");
     }
     frm.set_query("mode_of_payment", function(doc) {
       if(frm.doc.payment_method == "Cash"){
@@ -32,12 +32,15 @@ frappe.ui.form.on('Sales Invoice', {
   },
   refresh: function(frm) {
     frm.toggle_reqd("mode_of_payment", in_list(["Cash", "Transfer/EDC"], frm.doc.payment_method));
+    frm.set_df_property("naming_series", "hidden", 1);
   },
   reset_property: function(frm) {
     frm.toggle_reqd("customer", true);
     frm.set_value("update_stock", 1);
     frm.set_value("apply_discount_on", "Net Total");
+    frm.set_df_property("naming_series", "label", "No Nota Otomatis");
     frm.set_df_property("naming_series", "hidden", 1);
+    frm.set_df_property("customer_po_details", "hidden", 1);
     frm.set_df_property("update_stock", "read_only", 1);
     frm.set_df_property("apply_discount_on", "read_only", 1);
     frm.set_df_property("is_pos", "hidden", 1);
@@ -68,6 +71,7 @@ frappe.ui.form.on('Sales Invoice', {
     frm.set_df_property("subscription_section", "hidden", 1);
     frappe.meta.get_docfield("Sales Invoice Item", "barcode", frm.doc.name).hidden = 1;
     frappe.meta.get_docfield("Sales Invoice Item", "item_name", frm.doc.name).read_only = 1;
+    frappe.meta.get_docfield("Sales Invoice Item", "description_section", frm.doc.name).hidden = 1;
     frappe.meta.get_docfield("Sales Invoice Item", "drop_ship", frm.doc.name).hidden = 1;
     frappe.meta.get_docfield("Sales Invoice Item", "deferred_revenue", frm.doc.name).hidden = 1;
     frappe.meta.get_docfield("Sales Invoice Item", "section_break_18", frm.doc.name).hidden = 1;

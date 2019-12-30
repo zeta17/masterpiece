@@ -35,6 +35,12 @@ def get_data():
 					"dependencies": ["Production"],
 					"description": _("Payroll for Component."),
 				},
+				{
+					"type": "doctype",
+					"name": _("Store Cash Flow"),
+					"onboard": 1,
+					"description": _("Store Cash Flow."),
+				},
 			]
 		},
 		{

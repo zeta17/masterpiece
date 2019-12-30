@@ -1,0 +1,202 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2019-12-30 08:38:25.272888",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "warehouse",
+  "account",
+  "cb01",
+  "posting_date",
+  "sb02",
+  "initial_stock",
+  "final_stock",
+  "cb02",
+  "total_transaction",
+  "sb_expenses",
+  "expenses",
+  "sb03",
+  "cb03a",
+  "cb03b",
+  "total_expenses",
+  "net_total",
+  "sb_info",
+  "naming_series",
+  "amended_from",
+  "cb_info",
+  "company"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "CF-",
+   "reqd": 1
+  },
+  {
+   "default": "Gudang Toko - MPC",
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "default": "1111.003 - Kas Toko - MPC",
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Cash Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Store Cash Flow",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb_info",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "cb_info",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_expenses",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "expenses",
+   "fieldtype": "Table",
+   "label": "Pengeluaran",
+   "options": "Store Cash Flow Expense"
+  },
+  {
+   "fieldname": "sb02",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "initial_stock",
+   "fieldtype": "Currency",
+   "label": "Stock Awal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "final_stock",
+   "fieldtype": "Currency",
+   "label": "Stock Akhir",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_transaction",
+   "fieldtype": "Currency",
+   "label": "Total Transaksi",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb03",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_expenses",
+   "fieldtype": "Currency",
+   "label": "Total Biaya",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb03a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb03b",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "net_total",
+   "fieldtype": "Currency",
+   "label": "Sisa Uang",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-12-30 10:07:33.705599",
+ "modified_by": "Administrator",
+ "module": "Masterpiece",
+ "name": "Store Cash Flow",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

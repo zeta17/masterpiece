@@ -29,6 +29,7 @@ frappe.ui.form.on('Production', {
 			frm.add_custom_button(__('Buat Penerimaan Barang Jadi'),
         () => frm.events.make_receipt(frm));
     }
+		calculate_total(frm);
 	},
   make_receipt: function(frm){
 		var dialog = new frappe.ui.Dialog({
