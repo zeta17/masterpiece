@@ -9,7 +9,24 @@ from frappe import _
 from frappe.utils import flt
 
 class StoreCashFlow(Document):
-	pass
+	def on_submit(self):
+		if self.expenses:
+			je = frappe.new_doc("Journal Entry")
+			je.voucher_type = "Journal Entry"
+			je.posting_date = self.posting_date
+			je.company = self.company
+
+			for row in self.expenses:
+				je.append("accounts", {
+					"account": row.account,
+					"debit_in_account_currency": row.amount
+				})
+			je.append("accounts", {
+				"account": self.account,
+				"credit_in_account_currency": self.total_expenses
+			})
+			je.flags.ignore_permissions = True
+			je.submit()
 
 @frappe.whitelist()
 def get_initial_stock(warehouse, posting_date):

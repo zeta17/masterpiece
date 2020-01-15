@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 
+#   1.3.2
+#   - Update Store Cash Flow
 #   1.3.1
 #   - Add doctype: Store Cash Flow Expense (child)
 #   - Add doctype: Store Cash Flow
