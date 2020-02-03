@@ -92,6 +92,9 @@ doc_events = {
     "Sales Invoice": {
         "on_submit": "masterpiece.masterpiece.event.submit_sales_invoice",
         "before_cancel": "masterpiece.masterpiece.event.cancel_sales_invoice"
+    },
+    "Journal Entry": {
+        "on_submit": "masterpiece.masterpiece.event.submit_journal_entry"
     }
 }
 

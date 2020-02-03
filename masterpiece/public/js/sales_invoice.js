@@ -78,6 +78,10 @@ frappe.ui.form.on('Sales Invoice', {
     frappe.meta.get_docfield("Sales Invoice Item", "edit_references", frm.doc.name).hidden = 1;
     frappe.meta.get_docfield("Sales Invoice Item", "item_code", frm.doc.name).label = "Seri";
   },
+  payment_method: function(frm) {
+    frm.set_value("mode_of_payment", null);
+    frm.toggle_reqd("mode_of_payment", in_list(["Cash", "Transfer/EDC"], frm.doc.payment_method));
+  },
   mode_of_payment: function(frm) {
     frm.toggle_reqd("mode_of_payment", in_list(["Cash", "Transfer/EDC"], frm.doc.payment_method));
   },

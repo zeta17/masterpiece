@@ -55,6 +55,7 @@ def submit_sales_invoice(doc, method):
         pe.payment_type = payment_type
         pe.mode_of_payment = doc.mode_of_payment
         pe.party_type = "Customer"
+        pe.posting_date = doc.posting_date
         pe.party = doc.customer
         pe.party_balance = doc.outstanding_amount
         pe.paid_from = paid_from
@@ -94,3 +95,12 @@ def cancel_pe_from_si(doc):
             payment_entry = frappe.get_doc("Payment Entry", pe)
             payment_entry.flags.ignore_permissions = True
             payment_entry.cancel()
+
+def submit_journal_entry(doc, method):
+    for row in doc.accounts:
+        if row.store_cash_flow:
+            scf = frappe.get_doc("Store Cash Flow", row.store_cash_flow)
+            accumulate_withdraw = frappe.db.get_value("Journal Entry Account", {"docstatus":1, "store_cash_flow":row.store_cash_flow, "parent":["!=", doc.name]}, "sum(credit_in_account_currency)") or 0
+            total = flt(accumulate_withdraw) + flt(row.credit_in_account_currency)
+            if flt(total) > flt(scf.net_total):
+                frappe.throw(_("Total uang di baris {0} sudah melebihi {1} untuk Store Cash Flow no {2}").format(row.idx, fmt_money(scf.net_total, currency=row.account_currency), row.store_cash_flow))

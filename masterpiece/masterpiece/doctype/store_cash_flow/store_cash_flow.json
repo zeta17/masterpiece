@@ -7,6 +7,7 @@
  "field_order": [
   "warehouse",
   "account",
+  "cash_amount",
   "cb01",
   "posting_date",
   "sb02",
@@ -156,10 +157,17 @@
    "fieldtype": "Currency",
    "label": "Sisa Uang",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "cash_amount",
+   "fieldtype": "Currency",
+   "label": "Cash Amount",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-30 10:07:33.705599",
+ "modified": "2020-02-03 12:27:03.732206",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Store Cash Flow",

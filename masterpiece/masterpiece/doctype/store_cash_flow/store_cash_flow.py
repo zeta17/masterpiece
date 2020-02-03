@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from frappe import _
 from frappe.utils import flt
+from frappe.utils import flt, fmt_money, nowdate
 
 class StoreCashFlow(Document):
 	def on_submit(self):
@@ -27,6 +28,14 @@ class StoreCashFlow(Document):
 			})
 			je.flags.ignore_permissions = True
 			je.submit()
+
+@frappe.whitelist()
+def get_account_amount(account, posting_date):
+	cash = frappe.db.get_value("GL Entry", {"account":account, "posting_date":["<",posting_date]}, "(sum(debit_in_account_currency) - sum(credit_in_account_currency))") or 0
+	items = {
+		'cash_amount': cash
+	}
+	return items
 
 @frappe.whitelist()
 def get_initial_stock(warehouse, posting_date):
@@ -56,3 +65,22 @@ def get_initial_stock(warehouse, posting_date):
 		'total_transaction': sales_invoice
 	}
 	return items
+
+@frappe.whitelist()
+def make_return_cash(document, company, account, return_amount, posting_date):
+	je = frappe.new_doc('Journal Entry')
+	je.posting_date = posting_date
+	je.voucher_type = 'Journal Entry'
+	je.company = company
+
+	je.append('accounts', {
+		'account': account,
+		'credit_in_account_currency': return_amount,
+		'store_cash_flow': document
+	})
+
+	je.append("accounts", {
+		"debit_in_account_currency": return_amount
+	})
+
+	return je.as_dict()
