@@ -31,6 +31,102 @@ frappe.ui.form.on('Production', {
     }
 		calculate_total(frm);
 	},
+	seri_n_patrun: function(frm) {
+		if(frm.doc.seri_n_patrun) {
+			var str = frm.doc.seri_n_patrun;
+			var count = (str.match(/-/g) || []).length;
+			if(flt(count) > 1 || flt(count) == 0) {
+				msgprint("Salah format, yang benar misalnya: 1234-567");
+			}else{
+				var res = str.split("-");
+				frappe.call({
+		      method: "masterpiece.masterpiece.doctype.production.production.count_item",
+		      args: {
+						item: res[0]
+		      },
+		      callback: function(data) {
+						if(data.message == "kosong") {
+							frm.events.make_new_item(frm, res[0]);
+						}else{
+							frm.set_value("item_code", res[0])
+						}
+		      }
+		    })
+				frappe.call({
+		      method: "masterpiece.masterpiece.doctype.production.production.count_patrun",
+		      args: {
+						patrun: res[1]
+		      },
+		      callback: function(data) {
+						if(data.message == "kosong") {
+							frm.events.make_new_patrun(frm, res[1]);
+						}else{
+							frm.set_value("patrun_code", res[1])
+						}
+		      }
+		    })
+			}
+		}
+	},
+	make_new_item: function(frm, item) {
+		var dialog = new frappe.ui.Dialog({
+			title: __('New Seri'),
+			fields: [
+				{"fieldtype": "Data", "label": __("No Seri"), "fieldname": "item_code", "default":item, "reqd":1},
+				{"fieldtype": "Data", "label": __("Item Name"), "fieldname": "item_name", "reqd":1},
+				{"fieldtype": "Link", "label": __("Item Group"), "fieldname": "item_group", "options":"Item Group", "reqd":1, "get_query": function(){return {filters: [["is_group",'=',0]]};}},
+				{"fieldtype": "Link", "label": __("UOM"), "fieldname": "uom", "options":"UOM", "reqd":1},
+			]
+		});
+		dialog.set_primary_action(__('Submit'), function() {
+			var args = dialog.get_values();
+			if(!args) return;
+			return cur_frm.call({
+				method: "make_new_item",
+				doc: cur_frm.doc,
+				args: args,
+				callback: function(r){
+					if(r.exc){
+						frappe.msgprint(__("There were errors."));
+						return;
+					}
+					dialog.hide();
+					frm.set_value("item_code", item);
+					cur_frm.refresh();
+				},
+				btn: this
+			})
+		});
+		dialog.show();
+	},
+	make_new_patrun: function(frm, patrun) {
+		var dialog = new frappe.ui.Dialog({
+			title: __('New Kode Patrun'),
+			fields: [
+				{"fieldtype": "Data", "label": __("Kode Patrun"), "fieldname": "kode_patrun", "default":patrun, "reqd":1},
+			]
+		});
+		dialog.set_primary_action(__('Submit'), function() {
+			var args = dialog.get_values();
+			if(!args) return;
+			return cur_frm.call({
+				method: "make_new_patrun",
+				doc: cur_frm.doc,
+				args: args,
+				callback: function(r){
+					if(r.exc){
+						frappe.msgprint(__("There were errors."));
+						return;
+					}
+					dialog.hide();
+					frm.set_value("patrun_code", patrun)
+					cur_frm.refresh();
+				},
+				btn: this
+			})
+		});
+		dialog.show();
+	},
   make_receipt: function(frm){
 		var dialog = new frappe.ui.Dialog({
 			title: __('Pemerimaan Barang'),

@@ -88,6 +88,22 @@ class Production(Document):
 		else:
 			frappe.throw(_("Can not cancel {0} document").format(self.status))
 
+	def make_new_item(self, item_code, item_name, item_group, uom):
+		item = frappe.new_doc("Item")
+		item.item_code = item_code
+		item.item_name = item_name
+		item.item_group = item_group
+		item.stock_uom = uom
+		item.flags.ignore_permissions = True
+		item.save()
+		return item.name
+
+	def make_new_patrun(self, kode_patrun):
+		patrun = frappe.new_doc("Kode Patrun")
+		patrun.patrun_code = kode_patrun
+		patrun.flags.ignore_permissions = True
+		patrun.save()
+
 	def make_receipt(self, warehouse, receipt_date, qty):
 		sisa_qty = flt(self.qty) - flt(self.received_qty)
 		if flt(sisa_qty) >= flt(qty):
@@ -208,7 +224,19 @@ def get_item_from_patrun(kode_patrun):
 			}))
 		return items
 
+@frappe.whitelist()
+def count_item(item):
+	if frappe.db.exists("Item", item):
+		return "ada"
+	else:
+		return "kosong"
 
+@frappe.whitelist()
+def count_patrun(patrun):
+	if frappe.db.exists("Kode Patrun", patrun):
+		return "ada"
+	else:
+		return "kosong"
 # @frappe.whitelist()
 # def make_stock_receipt(source_name, target_doc=None):
 # 	def set_missing_values(source, target):

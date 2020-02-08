@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "employee",
+  "seri_n_patrun",
   "item_code",
   "patrun_code",
   "item_name",
@@ -337,10 +338,15 @@
    "fieldtype": "Select",
    "label": "Gambar Utama",
    "options": "\nGambar 1\nGambar 2\nGambar 3"
+  },
+  {
+   "fieldname": "seri_n_patrun",
+   "fieldtype": "Data",
+   "label": "Seri & Patrun"
   }
  ],
  "is_submittable": 1,
- "modified": "2019-12-07 14:58:59.358193",
+ "modified": "2020-02-08 15:40:59.690764",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Production",
