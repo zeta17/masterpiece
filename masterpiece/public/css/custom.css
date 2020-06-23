@@ -13,14 +13,14 @@
     color: white;
 }
 .content	{
-	background-color:#f4f6f8;
+	background-color:#e1e1e1;
 }
 .section-box  {
   background-color: #ffffff
 }
 .layout-main  {
   background-color: #ffffff;
-  border: 1px #d5d5d5 solid
+  border: 1px #7e7e7e solid
 }
 .title-text {
     color: #1341ec;
@@ -41,13 +41,13 @@
     background-color: rgb(255, 255, 255);
 }
 .page-head, .layout-main-section  {
-  border-color: #89d1ed !important
+  border-color: #0096d1 !important
 }
 .form-section:not(:last-child), .form-inner-toolbar {
-    border-bottom: 1px solid #89d1ed;
+    border-bottom: 1px solid #0096d1;
 }
 .shaded-section {
-    background-color: #def3fb;
+    background-color: #aee6fc;
 }
 h6.uppercase, .h6.uppercase {
     color: #000;
@@ -70,7 +70,22 @@ div[data-fieldtype="Float"] div.like-disabled-input,
 }
 
 h4.h4 {font-weight:bold}
-
+.form-grid {
+  border:1px #676767 solid
+}
+.grid-heading-row {
+  border-bottom: 3px double #676767;
+}
+.grid-row {
+  border-bottom: 1px solid #676767;
+}
+.grid-static-col, .row-index {
+  border-right: 1px solid #676767;
+}
+.grid-footer {
+  border:1px #676767 solid;
+  border-top:none
+}
 /* custom class */
 .transaction-wrapper  {
   margin: 5px 10px;

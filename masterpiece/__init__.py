@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-__version__ = '1.3.4'
+__version__ = '1.3.5'
+#   git push origin master
 
+#   1.3.5
+#   - Update Production
 #   1.3.4
 #   - Update Production
 #   1.3.3

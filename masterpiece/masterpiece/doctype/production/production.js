@@ -25,6 +25,8 @@ frappe.ui.form.on('Production', {
 		})
 	},
 	refresh: function(frm) {
+		frm.toggle_reqd("item_code", (!frm.doc.seri_n_patrun));
+		frm.toggle_reqd("patrun_code", (!frm.doc.seri_n_patrun));
     if(frm.doc.docstatus == 1 && in_list(["Submitted", "Partial Accepted"], frm.doc.status)) {
 			frm.add_custom_button(__('Buat Penerimaan Barang Jadi'),
         () => frm.events.make_receipt(frm));
