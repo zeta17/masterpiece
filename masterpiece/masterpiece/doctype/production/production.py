@@ -11,12 +11,24 @@ from frappe.model.mapper import get_mapped_doc
 
 class Production(Document):
 	def on_update(self):
-		title = self.patrun_code+"-"+self.item_code
-		self.db_set("title", title)
+		self.set_title()
+		self.set_seri()
 		self.update_patrun()
 		self.update_price_list()
 		self.update_item()
 		self.recalculate_rate()
+
+	def set_title(self):
+		title = self.seri_n_patrun if self.seri_n_patrun else self.item_code+"-"+self.patrun_code
+		self.db_set("title", title)
+
+	def set_seri(self):
+		if self.seri_n_patrun:
+			a, b = self.seri_n_patrun.split("-")
+			if not self.item_code:
+				self.db_set("item_code", a)
+			if not self.patrun_code:
+				self.db_set("patrun_code", b)
 
 	def update_patrun(self):
 		if self.image1:
@@ -56,16 +68,22 @@ class Production(Document):
 		total = 0
 		cogs = 0
 		for row in self.expenses:
+			row.db_set("qty", self.qty)
 			amount = flt(row.qty) * flt(row.rate)
 			row.db_set("amount", amount)
-			row.db_set("qty", self.qty)
 			total += amount
 			cogs += flt(row.rate)
 		self.db_set("total_expenses", total)
 		self.db_set("valuation_rate", cogs)
 
 	def on_submit(self):
-		self.db_set("status", "Submitted")
+		if self.received_qty == self.qty:
+			self.db_set("status", "Completed")
+		else:
+			if self.received_qty != 0:
+				self.db_set("status", "Partial Accepted")
+			else:
+				self.db_set("status", "Submitted")
 		self.update_patrun()
 		self.update_price_list()
 		self.update_item()

@@ -276,6 +276,7 @@
   {
    "fieldname": "title",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Title",
    "read_only": 1
   },
@@ -302,7 +303,7 @@
   {
    "allow_on_submit": 1,
    "fieldname": "lebar_dada",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Lebar Dada"
   },
   {
@@ -345,7 +346,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2020-05-30 16:44:09.472683",
+ "modified": "2020-06-25 15:08:55.435772",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Production",

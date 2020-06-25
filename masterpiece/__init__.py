@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-__version__ = '1.3.5'
+__version__ = '1.4.0'
 #   git push origin master
 
+#   1.4.0
+#   - Add doctype: Bulk Import
 #   1.3.5
 #   - Update Production
 #   1.3.4

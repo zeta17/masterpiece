@@ -1,4 +1,5 @@
 {
+ "allow_import": 1,
  "autoname": "field:patrun_code",
  "creation": "2019-11-18 21:43:36.756344",
  "doctype": "DocType",
@@ -71,7 +72,7 @@
    "options": "image3"
   }
  ],
- "modified": "2019-12-06 21:53:56.356853",
+ "modified": "2020-06-24 14:08:56.312423",
  "modified_by": "Administrator",
  "module": "Masterpiece",
  "name": "Kode Patrun",
@@ -82,10 +83,24 @@
    "delete": 1,
    "email": 1,
    "export": 1,
+   "import": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
    "share": 1,
    "write": 1
   }
